@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Voting Management System</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Top Navigation Bar -->
+        <div class="top-nav">
+            <div class="nav-left">
+                <div class="logo-container" onclick="refreshDashboard()" title="Refresh Dashboard">
+                    <img src="images/szalogo.svg" alt="Szabist" class="dashboard-logo">
+                </div>
+                <div class="nav-title">
+                    <h2>Admin Dashboard</h2>
+                   <b> <span class="nav-subtitle">System Management Portal</span></b>
+                   
+                </div>
+            </div>
+            <div class="nav-right">
+                <!-- Simple Dark Mode Button -->
+                <button id="darkModeBtn" onclick="simpleDarkModeToggle()" style="
+                    background: linear-gradient(135deg, #ffd700, #ff8c00);
+                    border: none;
+                    border-radius: 20px;
+                    width: 60px;
+                    height: 30px;
+                    cursor: pointer;
+                    font-size: 16px;
+                    transition: all 0.3s ease;
+                    margin-right: 10px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    line-height: 1;
+                " title="Toggle Dark Mode">☀️</button>
+                <button class="logout-button-top" onclick="logout()">
+                    <span class="logout-icon"></span>
+                    Logout
+                </button>
+            </div>
+        </div>
+
+        <div class="dashboard">
+            <!-- Admin Profile Card -->
+            <div class="admin-profile-section">
+                <div class="admin-profile-card-main">
+                    <div class="admin-avatar-large">
+                        <img id="adminProfilePicture" src="default-avatar.svg" alt="Admin" class="admin-avatar-img-large">
+                    </div>
+                    <div class="admin-info-detailed">
+                        <div class="admin-name-large" id="adminName">Administrator</div>
+                        <div class="admin-email-large" id="adminEmail">admin@voting.com</div>
+                        <div class="admin-role-large">🔐 System Administrator</div>
+                        <div class="admin-status">✅ Currently Logged In</div>
+                        <div class="admin-actions">
+                            <button class="edit-profile-btn" onclick="openEditProfileModal()">
+                                ✏️ Edit Profile
+                            </button>
+                            <button class="delete-account-btn" onclick="openDeleteAccountModal()">
+                                🗑️ Delete Account
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stats-section">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h4>Voters</h4>
+                        <span id="totalUsers">0</span>
+                    </div>
+                    <div class="stat-card">
+                        <h4>Total Votes</h4>
+                        <span id="totalVotes">0</span>
+                    </div>
+                    <div class="stat-card">
+                        <h4>Total Candidates</h4>
+                        <span id="totalCandidates">0</span>
+                    </div>
+                    <div class="stat-card">
+                        <h4>Active Candidates</h4>
+                        <span id="activeCandidates">0</span>
+                    </div>
+                    <div class="stat-card">
+                        <h4>Admins</h4>
+                        <span id="totalAdmins">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <canvas id="votesChart"></canvas>
+            </div>
+
+            <h3>Manage Candidates</h3>
+
+            <!-- Add Candidate Section -->
+            <div class="add-candidate-section">
+                <button id="toggleAddCandidateBtn" class="add-candidate-btn" onclick="toggleAddCandidateForm()">
+                    + Add New Candidate
+                </button>
+
+                <div id="addCandidateForm" class="add-candidate-form" style="display: none;">
+                    <h4>Add New Candidate</h4>
+                    <form id="candidateForm">
+                        <div class="form-group">
+                            <label for="candidateName">Candidate Name:</label>
+                            <input type="text" id="candidateName" required maxlength="100">
+                        </div>
+                        <div class="form-group">
+                            <label for="candidatePicture">Picture URL (optional):</label>
+                            <input type="url" id="candidatePicture" placeholder="https://example.com/image.jpg">
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="submit-btn">Add Candidate</button>
+                            <button type="button" class="cancel-btn" onclick="cancelAddCandidate()">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div id="candidatesList" class="candidates-list">
+                <!-- Candidates will be loaded here -->
+            </div>
+            <br>
+            <!-- User Registration Section -->
+            <h3>Register New Voter - Admin</h3>
+            <div class="user-registration-section">
+                <button id="toggleRegisterBtn" class="toggle-register-btn" onclick="openRegisterUserModal()">
+                    ➕ Register New Voter/Admin
+                </button>
+            </div>
+
+            <!-- User Management Section -->
+            <h3>Manage Voters</h3>
+            <div class="user-management-section">
+                <button id="toggleUsersBtn" class="toggle-users-btn" onclick="toggleUsersSection()">
+                    👥 Show Voters List
+                </button>
+
+                <div id="usersSection" class="users-section" style="display: none;">
+                    <div id="usersList" class="users-list">
+                        <!-- Users will be loaded here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Admin Management Section -->
+            <h3>View Admin</h3>
+            <div class="admin-management-section">
+                <button id="toggleAdminsBtn" class="toggle-admins-btn" onclick="toggleAdminsSection()">
+                    🔐 Show Admin Users
+                </button>
+
+                <div id="adminsSection" class="admins-section" style="display: none;">
+                    <div id="adminsList" class="admins-list">
+                        <!-- Admins will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create New User Account Modal -->
+    <div id="registerUserModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Create New Voter/admin Account</h3>
+                <span class="close" onclick="closeRegisterUserModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="adminRegisterForm">
+                    <div class="form-group">
+                        <label for="newUserName">Full Name:</label>
+                        <input type="text" id="newUserName" required maxlength="100">
+                    </div>
+                    <div class="form-group">
+                        <label for="newUserEmail">Email Address:</label>
+                        <input type="email" id="newUserEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="newUserPassword">Password:</label>
+                        <input type="password" id="newUserPassword" required minlength="6">
+                    </div>
+                    <div class="form-group">
+                        <label for="newUserRole">Role:</label>
+                        <select id="newUserRole" required>
+                            <option value="User">User</option>
+                            <option value="Admin">Admin</option>
+                        </select>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="submit-btn">Create Account</button>
+                        <button type="button" class="cancel-btn" onclick="closeRegisterUserModal()">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Profile Modal -->
+    <div id="editProfileModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Edit Admin Profile</h3>
+                <span class="close" onclick="closeEditProfileModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="editProfileForm">
+                    <div class="form-group">
+                        <label for="editAdminName">Full Name:</label>
+                        <input type="text" id="editAdminName" required maxlength="100">
+                    </div>
+                    <div class="form-group">
+                        <label for="editAdminEmail">Email Address:</label>
+                        <input type="email" id="editAdminEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editAdminPassword">New Password (leave blank to keep current):</label>
+                        <input type="password" id="editAdminPassword" minlength="6" placeholder="Enter new password or leave blank">
+                    </div>
+                    <div class="form-group">
+                        <label for="editAdminConfirmPassword">Confirm New Password:</label>
+                        <input type="password" id="editAdminConfirmPassword" placeholder="Confirm new password">
+                    </div>
+                    <div class="form-group">
+                        <label for="editAdminCurrentPassword">Current Password (required for changes):</label>
+                        <input type="password" id="editAdminCurrentPassword" required placeholder="Enter your current password">
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="submit-btn">Update Profile</button>
+                        <button type="button" class="cancel-btn" onclick="closeEditProfileModal()">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit User Modal -->
+    <div id="editUserModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Edit User Details</h3>
+                <span class="close" onclick="closeEditUserModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="editUserForm">
+                    <input type="hidden" id="editUserId">
+                    <div class="form-group">
+                        <label for="editUserName">Full Name:</label>
+                        <input type="text" id="editUserName" required maxlength="100">
+                    </div>
+                    <div class="form-group">
+                        <label for="editUserEmail">Email Address:</label>
+                        <input type="email" id="editUserEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editUserNewPassword">New Password (leave blank to keep current):</label>
+                        <input type="password" id="editUserNewPassword" minlength="6" placeholder="Enter new password or leave blank">
+                    </div>
+                    <div class="form-group">
+                        <label for="editUserConfirmPassword">Confirm New Password:</label>
+                        <input type="password" id="editUserConfirmPassword" placeholder="Confirm new password">
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="submit-btn">Update User</button>
+                        <button type="button" class="cancel-btn" onclick="closeEditUserModal()">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Account Modal -->
+    <div id="deleteAccountModal" class="modal" style="display: none;">
+        <div class="modal-content delete-modal">
+            <div class="modal-header">
+                <h3>⚠️ Delete Admin Account</h3>
+                <span class="close" onclick="closeDeleteAccountModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="warning-message">
+                    <p><strong>⚠️ WARNING: This action cannot be undone!</strong></p>
+                    <p>Deleting your admin account will:</p>
+                    <ul>
+                        <li>Permanently remove your account from the system</li>
+                        <li>Log you out immediately</li>
+                        <li>Remove all your administrative privileges</li>
+                        <li>This action is irreversible</li>
+                    </ul>
+                </div>
+                <form id="deleteAccountForm">
+                    <div class="form-group">
+                        <label for="deleteConfirmPassword">Enter your current password to confirm:</label>
+                        <input type="password" id="deleteConfirmPassword" required placeholder="Current password">
+                    </div>
+                    <div class="form-group">
+                        <label for="deleteConfirmText">Type "DELETE MY ACCOUNT" to confirm:</label>
+                        <input type="text" id="deleteConfirmText" required placeholder="DELETE MY ACCOUNT">
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="delete-btn">🗑️ Delete My Account</button>
+                        <button type="button" class="cancel-btn" onclick="closeDeleteAccountModal()">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/dark-mode.js"></script>
+    <script src="js/admin-dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voting Management System</title>
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Math CAPTCHA - No external dependencies needed -->
+</head>
+<body>
+    <div class="container">
+        <div class="auth-container">
+            <!-- Logo Section -->
+            <div class="logo-section">
+                <img src="images/szalogo.svg" alt="Szabist" class="login-logo">
+            </div>
+
+            <!-- Header with Dark Mode Toggle -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2 style="margin: 0;">Login</h2>
+                <!-- Simple Dark Mode Button -->
+                <button id="darkModeBtn" onclick="simpleDarkModeToggle()" style="
+                    background: linear-gradient(135deg, #ffd700, #ff8c00);
+                    border: none;
+                    border-radius: 20px;
+                    width: 60px;
+                    height: 30px;
+                    cursor: pointer;
+                    font-size: 16px;
+                    transition: all 0.3s ease;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    line-height: 1;
+                " title="Toggle Dark Mode">☀️</button>
+            </div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" required>
+                </div>
+                <div class="form-group">
+                    <label for="role">Role:</label>
+                    <select id="role" required>
+                        <option value="User">Voter</option>
+                        <option value="Admin">Admin</option>
+                    </select>
+                </div>
+
+                <!-- Math CAPTCHA (Alternative to reCAPTCHA) -->
+                <div class="form-group recaptcha-container">
+                    <label for="captcha">Security Check:</label>
+                    <div class="math-captcha-inline">
+                        <span id="math-question-inline"></span>
+                        <input type="number" id="captcha-answer" required placeholder="?">
+                        <button type="button" onclick="generateMathCaptcha()" title="Generate new question">🔄</button>
+                    </div>
+                    <div id="captcha-error" class="error-message" style="display: none;">
+                        Incorrect answer. Please try again.
+                    </div>
+                </div>
+
+                <button type="submit" id="submitButton">Login</button>
+            </form>
+            <p style="color: #6c757d; font-size: 14px; margin-top: 15px;">
+                 New users can only register by an administrator
+            </p>
+        </div>
+    </div>
+
+    <script src="js/dark-mode.js"></script>
+    <script src="js/auth.js"></script>
+</body>
+</html>

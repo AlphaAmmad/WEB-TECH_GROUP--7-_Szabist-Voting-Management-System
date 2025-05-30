@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard - Voting Management System</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Top Navigation Bar -->
+        <div class="top-nav">
+            <div class="nav-left">
+                <div class="logo-container" onclick="refreshDashboard()" title="Refresh Dashboard">
+                    <img src="images/szalogo.svg" alt="Szabist" class="dashboard-logo">
+                </div>
+                <div class="nav-title">
+                    <h2>Voter Dashboard</h2>
+                    <span class="nav-subtitle">Your Voting Portal</span>
+                </div>
+            </div>
+            <div class="nav-right">
+                <!-- Simple Dark Mode Button -->
+                <button id="darkModeBtn" onclick="simpleDarkModeToggle()" style="
+                    background: linear-gradient(135deg, #ffd700, #ff8c00);
+                    border: none;
+                    border-radius: 20px;
+                    width: 60px;
+                    height: 30px;
+                    cursor: pointer;
+                    font-size: 16px;
+                    transition: all 0.3s ease;
+                    margin-right: 10px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    line-height: 1;
+                " title="Toggle Dark Mode">☀️</button>
+                <button class="logout-button-top" onclick="logout()">
+                    <span class="logout-icon"></span>
+                    Logout
+                </button>
+            </div>
+        </div>
+
+        <div class="dashboard">
+            <!-- User Profile Card -->
+            <div class="admin-profile-section">
+                <div class="admin-profile-card-main">
+                    <div class="admin-avatar-large">
+                        <img id="userProfilePicture" src="default-avatar.svg" alt="User" class="admin-avatar-img-large"
+                             onclick="document.getElementById('profilePictureInput').click()"
+                             title="Click to change profile picture">
+                        <input type="file" id="profilePictureInput" accept="image/*" style="display: none;">
+                    </div>
+                    <div class="admin-info-detailed">
+                        <div class="admin-name-large" id="userName">User</div>
+                        <div class="admin-email-large" id="userEmail">user@example.com</div>
+                        <div class="admin-role-large">👤 Voter</div>
+                        <div class="admin-status" id="userStatus">✅ Ready to Vote</div>
+                        <div class="profile-actions">
+                            <button class="change-picture-btn" onclick="document.getElementById('profilePictureInput').click()">
+                                📷 Change Profile Picture
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- User Stats Section -->
+            <div class="stats-section">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h4>Voting Status</h4>
+                        <span id="votingStatus">Not Voted</span>
+                    </div>
+                    <div class="stat-card">
+                        <h4>Total Candidates</h4>
+                        <span id="totalCandidates">0</span>
+                    </div>
+                    <div class="stat-card">
+                        <h4>Active Candidates</h4>
+                        <span id="activeCandidates">0</span>
+                    </div>
+                    <div class="stat-card">
+                        <h4>Member Since</h4>
+                        <span id="memberSince">-</span>
+                    </div>
+                </div>
+            </div>
+                <br>
+                <br>
+            <!-- Voted Candidate Section -->
+            <div id="votedCandidateSection" style="display: none;">
+                <h3>Your Vote</h3>
+                <div class="candidate-card voted-candidate-card">
+                    <div class="candidate-info">
+                        <div class="candidate-details">
+                            <h4 id="votedCandidateName"></h4>
+                            <p>✅ Voted on: <span id="votedCandidateDate"></span></p>
+                            <p class="vote-confirmation">Thank you for participating in the voting process!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                <br>
+                <br>
+
+            <!-- Available Candidates Section -->
+            <h3>Available Candidates</h3>
+            <div id="candidatesList" class="candidates-list">
+                <!-- Candidates will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="js/dark-mode.js"></script>
+    <script src="js/user-dashboard.js"></script>
+</body>
+</html>
